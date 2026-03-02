@@ -1,0 +1,7 @@
+streamlit
+pdfplumber
+pdfminer.six
+Pillow
+openpyxl
+pycryptodome
+pyinstaller
