@@ -2,11 +2,6 @@
 import streamlit as st
 import os
 
-try:
-    from streamlit import st_autorefresh
-except Exception:
-    st_autorefresh = None
-
 from ui.layout import configure_page, apply_styles, header
 from ui.sidebar import render_sidebar
 from ui.results import render_results
@@ -18,14 +13,11 @@ from src.interval_logic import preprocessar_linhas, analisar_intervalo, gerar_in
 
 
 # ---- Config do watchdog (fecha o programa inteiro) ----
-IDLE_TIMEOUT_SEC = 180         # 3min sem nenhuma aba conectada -> fecha
-WATCH_INTERVAL_SEC = 5        # checa a cada 5s
-HEARTBEAT_REFRESH_MS = 5000   # mantem heartbeat enquanto a aba estiver aberta
+IDLE_TIMEOUT_SEC = 10         # fecha 10s apos a ultima aba desconectar
+WATCH_INTERVAL_SEC = 2        # checa a cada 2s
 
-# Registra heartbeat (faz o app fechar sozinho quando ninguÃ©m estiver usando)
+# Registra a sessao ativa (faz o app fechar sozinho quando ninguem estiver usando)
 if os.environ.get("MTR03_DISABLE_WATCHDOG") != "1":
-    if st_autorefresh:
-        st_autorefresh(interval=HEARTBEAT_REFRESH_MS, key="mtr03_heartbeat")
     register_heartbeat(IDLE_TIMEOUT_SEC, WATCH_INTERVAL_SEC)
 
 # ---- UI base ----
